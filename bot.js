@@ -5,7 +5,7 @@ require('dotenv').config();
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 const powerAutomateUrl = process.env.POWER_AUTOMATE_URL; // L'URL générée par Power Automate
 
-await client.login(process.env.DISCORD_TOKEN);
+client.login(process.env.DISCORD_TOKEN);
 
 client.once('ready', () => {
     console.log('Bot connecté à Discord !');
@@ -13,7 +13,7 @@ client.once('ready', () => {
 
 client.on('disconnect', async () => {
     console.log('Bot disconnected, attempting to reconnect...');
-    await client.login(process.env.DISCORD_TOKEN);
+    client.login(process.env.DISCORD_TOKEN);
 });
 
 client.on('reconnecting', () => {
