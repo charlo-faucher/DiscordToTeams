@@ -1,9 +1,15 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 const axios = require('axios');
+const express = require('express');
+const app = express();
 require('dotenv').config();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 const powerAutomateUrl = process.env.POWER_AUTOMATE_URL; // L'URL générée par Power Automate
+
+app.get('/keep-alive', (req, res) => {
+    res.send('Alive');
+});
 
 client.login(process.env.DISCORD_TOKEN);
 
@@ -29,4 +35,9 @@ client.on('messageCreate', (message) => {
             .then(() => console.log('Message transféré à Teams'))
             .catch(error => console.error('Erreur lors du transfert du message :', error));
     }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
