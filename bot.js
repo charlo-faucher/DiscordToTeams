@@ -19,7 +19,7 @@ client.once('ready', () => {
 
 client.on('disconnect', async () => {
     console.log('Bot disconnected, attempting to reconnect...');
-    client.login(process.env.DISCORD_TOKEN);
+    await client.login(process.env.DISCORD_TOKEN);
 });
 
 client.on('reconnecting', () => {
@@ -29,8 +29,10 @@ client.on('reconnecting', () => {
 client.on('messageCreate', (message) => {
     if (message.channelId === process.env.CHANNEL_ID && !message.author.bot) {
         axios.post(powerAutomateUrl, {
+            date: new Date(message.createdTimestamp).toLocaleDateString(),
+            time: new Date(message.createdTimestamp).toLocaleTimeString(),
             content: message.content,
-            author: message.author.username
+            author: message.member.nickname || message.author.username
         })
             .then(() => console.log('Message transféré à Teams'))
             .catch(error => console.error('Erreur lors du transfert du message :', error));
